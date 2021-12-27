@@ -1,6 +1,9 @@
 name: Mirror to Gitee Repo
 
 on: [ push, delete, create ]
+  schedule:
+    # 每天北京时间9点跑
+    - cron:  '0 */2 * * *'
 
 jobs:
   git-mirror:
