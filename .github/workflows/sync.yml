@@ -2,9 +2,8 @@ name: Mirror to Gitee Repo
 
 on:
 # 如果需要PR触发把push前的#去掉
-# push:
+push:
   schedule:
-    # 每天北京时间9点跑
     - cron:  '0 */2 * * *'
 
 jobs:
