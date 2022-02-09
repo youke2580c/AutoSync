@@ -20,8 +20,8 @@ jobs:
           echo "StrictHostKeyChecking no" >> ~/.ssh/config
       - name: Push Mirror
         env:
-          SOURCE_REPO: 'https://github.com/Yiov/nvjdcdocker.git'
-          DESTINATION_REPO: 'git@gitee.com:antipodal/nvjdcdocker.git'
+          SOURCE_REPO: 'https://github.com/gys619/Absinthe.git'
+          DESTINATION_REPO: 'git@gitee.com:antipodal/Absinthe.git'
         run: |
           git clone --mirror "$SOURCE_REPO" && cd `basename "$SOURCE_REPO"`
           git remote set-url --push origin "$DESTINATION_REPO"
