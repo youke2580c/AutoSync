@@ -1,5 +1,4 @@
-name: Check and Upload Latest Release
-
+name: legado_update
 on:
   schedule:
     - cron: '0 * * * *'  # 每小时检查一次
