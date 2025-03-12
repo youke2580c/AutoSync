@@ -1,0 +1,46 @@
+name: Check and Upload Latest Release
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # 每小时检查一次
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  check-and-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check for new release
+      id: check-release
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const { data: releases } = await github.rest.repos.listReleases({
+            owner: 'gedoor',
+            repo: 'legado',
+          });
+          const latestRelease = releases[0];
+          const latestTag = latestRelease.tag_name;
+          const asset = latestRelease.assets.find(asset => asset.name.endsWith('.apk'));
+          if (!asset) {
+            core.setFailed('No APK asset found in the latest release.');
+          }
+          return {
+            tag_name: latestTag,
+            download_url: asset.browser_download_url,
+            asset_name: asset.name,
+          };
+
+    - name: Download the latest APK
+      run: |
+        curl -L -o ${{ steps.check-release.outputs.asset_name }} ${{ steps.check-release.outputs.download_url }}
+
+    - name: Upload to WebDAV
+      run: |
+        curl -u "${{ secrets.WEBDAV_USERNAME }}:${{ secrets.WEBDAV_PASSWORD }}" \
+             -T ${{ steps.check-release.outputs.asset_name }} \
+             https://cloud.wenyinos.com/dav/APP/${{ steps.check-release.outputs.asset_name }}
+
+    - name: Clean up
+      run: |
+        rm ${{ steps.check-release.outputs.asset_name }}
