@@ -25,22 +25,20 @@ jobs:
           if (!asset) {
             core.setFailed('No APK asset found in the latest release.');
           }
-          return {
-            tag_name: latestTag,
-            download_url: asset.browser_download_url,
-            asset_name: asset.name,
-          };
+          core.setOutput('tag_name', latestTag);
+          core.setOutput('download_url', asset.browser_download_url);
+          core.setOutput('asset_name', asset.name);
 
     - name: Download the latest APK
       run: |
-        curl -L -o ${{ steps.check-release.outputs.asset_name }} ${{ steps.check-release.outputs.download_url }}
+        curl -L -o "${{ steps.check-release.outputs.asset_name }}" "${{ steps.check-release.outputs.download_url }}"
 
     - name: Upload to WebDAV
       run: |
         curl -u "${{ secrets.WEBDAV_USERNAME }}:${{ secrets.WEBDAV_PASSWORD }}" \
-             -T ${{ steps.check-release.outputs.asset_name }} \
+             -T "${{ steps.check-release.outputs.asset_name }}" \
              https://cloud.wenyinos.com/dav/APP/${{ steps.check-release.outputs.asset_name }}
 
     - name: Clean up
       run: |
-        rm ${{ steps.check-release.outputs.asset_name }}
+        rm "${{ steps.check-release.outputs.asset_name }}"
