@@ -32,16 +32,16 @@ jobs:
       run: |
         curl -L -o "${{ steps.check-release.outputs.asset_name }}" "${{ steps.check-release.outputs.download_url }}"
 
-    - name: Rename APK to legado_app_release.apk
+    - name: Rename APK to legado_app_releaseA.apk
       run: |
-        mv "${{ steps.check-release.outputs.asset_name }}" legado_app_release.apk
+        mv "${{ steps.check-release.outputs.asset_name }}" legado_app_releaseA.apk
 
     - name: Upload to WebDAV
       run: |
         curl -u "${{ secrets.WEBDAV_USERNAME }}:${{ secrets.WEBDAV_PASSWORD }}" \
-             -T "legado_app_release.apk" \
-             https://cloud.wenyinos.com/dav/APP/legado_app_release.apk
+             -T "legado_app_releaseA.apk" \
+             https://cloud.wenyinos.com/dav/APP/legado_app_releaseA.apk
 
     - name: Clean up
       run: |
-        rm "legado_app_release.apk"
+        rm "legado_app_releaseA.apk"
