@@ -1,7 +1,7 @@
 name: legado_update
 on:
   schedule:
-    - cron: '0 * * * *'  # 每小时检查一次
+    - cron: '0 */12 * * *'  # 每天检查两次
   workflow_dispatch:  # 允许手动触发
 
 jobs:
