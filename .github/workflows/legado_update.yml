@@ -20,7 +20,7 @@ jobs:
           });
           const latestRelease = releases[0];
           const latestTag = latestRelease.tag_name;
-          const asset = latestRelease.assets.find(asset => asset.name.endsWith('.apk'));
+          const asset = latestRelease.assets.find(asset => asset.name.endsWith('A.apk'));
           if (!asset) {
             core.setFailed('No APK asset found in the latest release.');
           }
